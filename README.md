@@ -4,9 +4,9 @@ This is the code base for the OKAYILOVEYOU Music and VR site. Created using Thre
 
 3D brush strokes created using a slightly customised [Open Brush](https://github.com/icosa-gallery/open-brush), then animated using ThreeJS.
 
-OKAYILOVEYOU are:
-Connor: Bass and The Funk
-Curt: Guitar and a Powerful Sense of Dread
+## OKAYILOVEYOU are:
+Connor: Bass and The Funk \
+Curt: Guitar and a Powerful Sense of Dread \
 Harry: Drums and Delay Pedals
 
 ## Available Scripts
