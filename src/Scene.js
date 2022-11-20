@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { VRButton } from 'three/addons/webxr/VRButton.js';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const Scene = (props) => {
 	const root = document.getElementById("root");
@@ -8,30 +8,7 @@ const Scene = (props) => {
 	const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 2000 );
 	const [renderer] = useState(new THREE.WebGLRenderer());
 	const button = VRButton.createButton(renderer)
-	
-	renderer.xr.enabled = true;
-	renderer.setSize( window.innerWidth, window.innerHeight );
-	
-	root.appendChild(renderer.domElement);
-	root.appendChild(button);
-
-	let textObj = new THREE.Object3D();
 	let childrenArray = []
-
-	const jsonLoader = new THREE.ObjectLoader();
-	jsonLoader.load(
-		"assets/THISONE.json",
-		function (obj){
-			textObj = obj
-			childrenArray = textObj.children[0].children;
-			scene.add( textObj );
-		},
-		function (xhr){ console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );},
-		function (err){ console.error( 'An error happened' );}
-	);
-
-	camera.position.z = 0;
-	camera.position.y = 1;
 
 	function animate(sceneType) {
 		renderer.setAnimationLoop(function(){
@@ -57,7 +34,32 @@ const Scene = (props) => {
 		} );
 	};
 
-	animate(props.sceneType);
+	useEffect(() => {
+		renderer.xr.enabled = true;
+		renderer.setSize( window.innerWidth, window.innerHeight );
+	
+		root.appendChild(renderer.domElement);
+		root.appendChild(button);
+
+		let textObj = new THREE.Object3D();
+
+		const jsonLoader = new THREE.ObjectLoader();
+		jsonLoader.load(
+			"assets/THISONE.json",
+			function (obj){
+				textObj = obj
+				childrenArray = textObj.children[0].children;
+				scene.add(textObj);
+			},
+			function (xhr){ console.log((xhr.loaded / xhr.total * 100) + '% loaded'); },
+			function (err){ console.error('An error happened'); }
+		);
+
+		camera.position.z = 0;
+		camera.position.y = 1;
+
+		animate(props.sceneType);
+	});
 }
 
 export default Scene

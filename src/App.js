@@ -3,13 +3,13 @@ import React, { useState } from 'react';
 import Scene from './Scene';
 
 const App = () => {
-	const [sceneType, setSceneType] = useState("")
+	const [sceneType, setSceneType] = useState("vr")
 
 	return (
 		<>
 			<div className="absolute w-full h-full text-pink-200">
 				<div className="relative w-full h-full flex flex-col justify-end">
-					<h2 className="hidden text-center font-bold text-5xl shadow-2xl md:block">
+					<h2 className="text-center font-bold text-5xl hidden md:block">
 						OKAYILOVEYOUOKAYILOVEYOUOKAYILOVEYOU
 					</h2>
 					<h2 className="text-center font-bold text-5xl md:hidden">
