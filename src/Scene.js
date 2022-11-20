@@ -5,49 +5,36 @@ import { useState } from 'react';
 const Scene = (props) => {
 	const root = document.getElementById("root");
 	const scene = new THREE.Scene()
-	const [camera] = useState(new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 2000 ));
+	const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 2000 );
 	const [renderer] = useState(new THREE.WebGLRenderer());
-	const [button] = useState(VRButton.createButton(renderer))
+	const button = VRButton.createButton(renderer)
+	
 	renderer.xr.enabled = true;
 	renderer.setSize( window.innerWidth, window.innerHeight );
-	root.appendChild( renderer.domElement );
-	root.appendChild( button );
-	renderer.render( scene, camera );
+	
+	root.appendChild(renderer.domElement);
+	root.appendChild(button);
 
 	let textObj = new THREE.Object3D();
-
 	let childrenArray = []
 
 	const jsonLoader = new THREE.ObjectLoader();
 	jsonLoader.load(
-	// resource URL
 		"assets/THISONE.json",
-
-		// onLoad callback
-		// Here the loaded data is assumed to be an object
-		function ( obj ) {
-			// Add the loaded object to the scene
+		function (obj){
 			textObj = obj
 			childrenArray = textObj.children[0].children;
 			scene.add( textObj );
 		},
-
-		// onProgress callback
-		function ( xhr ) {
-			console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
-		},
-
-		// onError callback
-		function ( err ) {
-			console.error( 'An error happened' );
-		}
+		function (xhr){ console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );},
+		function (err){ console.error( 'An error happened' );}
 	);
 
 	camera.position.z = 0;
 	camera.position.y = 1;
 
 	function animate(sceneType) {
-		renderer.setAnimationLoop( function () {
+		renderer.setAnimationLoop(function(){
 			if (sceneType === "vr"){
 				childrenArray.forEach((mesh) => {
 					mesh.material.color.b -= 0.01;
@@ -66,7 +53,7 @@ const Scene = (props) => {
 			scene.scale.y += 0.0001
 			scene.scale.z += 0.0001
 			scene.scale.x += 0.0001
-			renderer.render( scene, camera );
+			renderer.render(scene, camera);
 		} );
 	};
 
