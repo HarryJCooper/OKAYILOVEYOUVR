@@ -48,7 +48,7 @@ const Scene = (props) => {
 
 	function animate(sceneType) {
 		renderer.setAnimationLoop( function () {
-			if (sceneType === "VR"){
+			if (sceneType === "vr"){
 				childrenArray.forEach((mesh) => {
 					mesh.material.color.b -= 0.01;
 					mesh.material.color.r += 0.01;

@@ -2,7 +2,11 @@
 module.exports = {
   content: ['./src/**/*.{js,jsx,ts,tsx,html}'],
   theme: {
-    extend: {},
+    extend: {
+      spacing: {
+        "custom-title":"9.15rem"
+      }
+    },
   },
   plugins: [require('@tailwindcss/typography')],
 }
