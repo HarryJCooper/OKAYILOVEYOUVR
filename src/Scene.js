@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { VRButton } from 'three/addons/webxr/VRButton.js';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 const Scene = (props) => {
 	const root = document.getElementById("root");
@@ -18,44 +18,50 @@ const Scene = (props) => {
 
 	let childrenArray = []
 
-	if (props.sceneType === "VR"){
-		const jsonLoader = new THREE.ObjectLoader();
-		jsonLoader.load(
-		// resource URL
-			"assets/THISONE.json",
+	const jsonLoader = new THREE.ObjectLoader();
+	jsonLoader.load(
+	// resource URL
+		"assets/THISONE.json",
 
-			// onLoad callback
-			// Here the loaded data is assumed to be an object
-			function ( obj ) {
-				// Add the loaded object to the scene
-				textObj = obj
-				childrenArray = textObj.children[0].children;
-				console.log(childrenArray)
-				scene.add( textObj );
-			},
+		// onLoad callback
+		// Here the loaded data is assumed to be an object
+		function ( obj ) {
+			// Add the loaded object to the scene
+			textObj = obj
+			childrenArray = textObj.children[0].children;
+			scene.add( textObj );
+		},
 
-			// onProgress callback
-			function ( xhr ) {
-				console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
-			},
+		// onProgress callback
+		function ( xhr ) {
+			console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
+		},
 
-			// onError callback
-			function ( err ) {
-				console.error( 'An error happened' );
-			}
-		);
-	}
+		// onError callback
+		function ( err ) {
+			console.error( 'An error happened' );
+		}
+	);
 
 	camera.position.z = 0;
 	camera.position.y = 1;
 
-	function animate() {
+	function animate(sceneType) {
 		renderer.setAnimationLoop( function () {
-			childrenArray.forEach((mesh) => {
-				mesh.material.color.b -= 0.01;
-				mesh.material.color.r += 0.01;
-				mesh.material.color.g -= 0.01;
-			})
+			if (sceneType === "VR"){
+				childrenArray.forEach((mesh) => {
+					mesh.material.color.b -= 0.01;
+					mesh.material.color.r += 0.01;
+					mesh.material.color.g -= 0.01;
+				})
+			} else {
+				childrenArray.forEach((mesh) => {
+					mesh.material.color.b += 0.01;
+					mesh.material.color.r -= 0.01;
+					mesh.material.color.g -= 0.01;
+				})
+			}
+			
 			scene.rotation.y += 0.001;
 			scene.scale.y += 0.0001
 			scene.scale.z += 0.0001
@@ -64,11 +70,7 @@ const Scene = (props) => {
 		} );
 	};
 
-	animate();
-
-	return (
-		<></>
-	)
+	animate(props.sceneType);
 }
 
 export default Scene
