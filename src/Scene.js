@@ -10,6 +10,32 @@ const Scene = (props) => {
 	const button = VRButton.createButton(renderer)
 	let childrenArray = []
 
+	// create an AudioListener and add it to the camera
+	const listener = new THREE.AudioListener();
+	camera.add(listener);
+
+	// create the PositionalAudio object (passing in the listener)
+	const soundOne = new THREE.PositionalAudio(listener);
+
+	// load a sound and set it as the PositionalAudio object's buffer
+	const audioLoaderOne = new THREE.AudioLoader();
+	audioLoaderOne.load('assets/sounds/space_guitar_left.ogg', function( buffer ) {
+		soundOne.setBuffer(buffer);
+		soundOne.setRefDistance(40);
+		soundOne.play();
+	});
+
+	// create an object for the sound to play from
+	const sphere = new THREE.SphereGeometry(20, 32, 16);
+	const material = new THREE.MeshPhongMaterial( { color: 0xff2200 } );
+	const soundMesh = new THREE.Mesh(sphere, material);
+	soundMesh.position.y = 1;
+	soundMesh.position.z = 4;
+	scene.add(soundMesh);
+
+	// finally add the sound to the mesh
+	soundMesh.add(soundOne);
+
 	function animate(sceneType) {
 		renderer.setAnimationLoop(function(){
 			if (sceneType === "vr"){
@@ -56,7 +82,7 @@ const Scene = (props) => {
 		);
 
 		camera.position.z = 0;
-		camera.position.y = 1;
+		camera.position.y = 1.2;
 
 		animate(props.sceneType);
 	});
